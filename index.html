@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+
+    <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon">
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,0,0" />
+
+    <link rel="stylesheet" href="./style.css" >
+
+    <style>
+
+        .main {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap:2rem;
+        }
+
+        .left {
+            display: grid;
+            grid-template-rows: auto 1fr;
+            gap: 2rem;
+        }
+
+        .right {
+            display: grid;
+        }
+
+        .stat {
+            padding: 1rem;
+            border: 1px solid transparent;
+            display: grid;
+            gap: 10px;
+            
+        }
+
+        .shadow {
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
+            border-radius: 15px;
+        }
+
+        /* MEDIA QUERIES */
+        @media screen and (max-width: 1000px) {
+
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .mobile-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 2rem;
+            }
+
+            .mobile-header-right {
+                display: flex;
+                align-items: center;
+                gap:1rem
+            }
+
+            .initials, .mobile-header-right .initials {
+                width: fit-content;
+                aspect-ratio: 1;
+                border: 1px solid var(--primary-color);
+                border-radius: 50%;
+                padding:0.5rem;
+                font-size: 1rem;
+                color: white;
+                background-color: var(--primary-color);
+                font-weight: bolder;
+            }
+
+            .logo {
+                width: fit-content;
+                margin:0;
+            }
+
+            .top-right, header .name {
+                display: none;
+            }
+
+          .top-right {
+                background-color: aqua;
+                display: none !important;
+            }
+
+            .menu-btn {
+                display: block;
+            }
+
+            aside {
+                    position: fixed;
+                    left: -100%;
+                    width: 18rem;
+                    height: 100% !important;
+                    display: none;
+                    animation: slidein 400ms ease forwards;
+                }
+
+            @keyframes slidein {
+                to {
+                    left: 0;
+                }
+            }
+
+        }
+        
+        @media screen and (max-width: 600px) {
+
+            .main {
+                grid-template-columns: 1fr;
+                gap:1rem;
+            }
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .label {
+            font-weight: 500;
+            font-size: .8rem
+        }
+
+        .value {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        #clientName, .clientName {
+            font-size: 1rem;
+            font-weight: 600;
+            color:var(--primary-color);
+        }
+
+        .clientID {
+            font-weight: 600;
+            color: var(--primary-color);
+            text-align: right;
+        }
+
+        .time {
+            font-weight: 300;
+            text-align: right;
+        }
+
+        dialog {
+          margin: auto;
+          padding: 2rem;
+          border: none;
+          border-radius: 20px;
+          position:relative;
+        }
+
+        dialog .close-btn {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+        }
+
+        dialog #notification {
+            max-width: 40rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        form {
+            display: grid;
+            gap: 1rem;
+        }
+
+        form button {
+            width: min-content;
+            padding: 10px 1.5rem;
+            background-color: transparent;
+            border-radius: 20px;
+            border: 1px solid gainsboro;
+        }
+
+        label {
+            margin-bottom: 4px;
+        }
+
+        label, input,select {
+            display: block;
+
+        }
+
+        input, select {
+            width: 100%;
+            height: 50px;
+            border-radius: 10px;
+            border: 1px solid gainsboro;
+            padding: 10px;
+        }
+
+        .full {
+            width: 100%;
+        }
+
+        .half {
+            width: 50%;
+        }
+
+        .header {
+            display: grid;
+            border-bottom: 0.5px solid gainsboro;
+            gap: 1rem;
+            padding:3rem 0 10px;
+        }
+
+        .link {
+            color:var(--secondary-color);
+        }
+
+        .inner-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            justify-items: stretch;
+            gap: 10px;
+        }
+
+        .currency {
+            font-style: italic;
+        }
+
+        .red {
+            color: red;
+        }
+
+        .error h2 {
+            padding-top: 2rem;
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="top-left">
+            <div class="logo">
+                <img src="./assets/logo.png">
+            </div>
+    
+            <div class="name">
+                <p>Hello</p>
+                <p id="clientName">Dabelulu</p>
+            </div>
+        </div>
+        <div class="top-right">
+            <div class="partner">
+                <p id="clientID" class="clientID">
+                    ID-Billions
+                </p>
+                <p id="time" class="time">
+                    ID-Billions
+                </p>
+                
+            </div>
+            <div class="initials">
+                E.J
+            </div>
+        </div>
+        <button class="menu-btn">
+            <span class="material-symbols-rounded">
+                menu
+                </span>
+        </button>
+    </header>
+
+ <div class="container">
+    <aside>
+        <nav>
+           <ul>
+            <li>
+                <a class="menu-item" href="">
+                    <span class="material-symbols-rounded">dashboard</span>
+                    <h3>Dashboard</h3>
+                </a>
+            </li>
+            <li>
+                <button class="menu-item"  onclick="render(0)">
+                    <span class="material-symbols-rounded">payments</span>
+                    <h3>Deposit</h3>
+                </button>
+            </li>
+        
+            <li>
+                <button class="menu-item" onclick="render(1)">
+                    <span class="material-symbols-rounded">credit_card</span>
+                    <h3>Withdraw</h3>
+                </button>
+                
+            </li>
+            <li>
+                <button class="menu-item"  onclick="render(2)">
+                    <span class="material-symbols-rounded">account_balance</span>
+                    <h3> Account Statement</h3>
+                </button>
+               
+            </li>
+            <li>
+                <a class="menu-item" href="">
+                    <span class="material-symbols-rounded">
+                        tour
+                        </span>
+                    <h3> Visitation</h3>
+                </a>
+            </li>
+            <li>
+                <a class="menu-item" href="">
+                    <span class="material-symbols-rounded"> key</span>
+                    <h3> Enable 2FA</h3>
+                </a>
+            </li>
+           </ul>
+
+        
+        </nav>
+
+        <div>
+            <a class="menu-item" href="">
+                <span class="material-symbols-rounded">logout</span>
+                <h3> Logout</h3>
+            </a>
+        </div>
+
+    </aside>
+    <main>
+
+        <div>
+            <div class="mobile-header">
+                <div class="mobile-header-left">
+
+                        <p>Hello</p>
+                        <p class="clientName">Dabelulu</p>
+
+                </div>
+                <div class="mobile-header-right">
+                    <div class="partner">
+                        <p class="clientID">
+                            ID-Billions
+                        </p>
+                        <p class="time">
+                            ID-Billions
+                        </p>
+                        
+                    </div>
+                    <div class="initials">
+                        E.J
+                    </div>
+                </div>
+            </div>
+            <marquee>
+                Hello world
+            </marquee>
+        </div>
+        <div class="main">
+            <div class="left">
+                <div class="stat shadow" >
+                    <div class="row">
+                        <p class="label">Invested Capital</p>
+                        <p class="value">$100</p>
+                    </div>
+                    <div class="row">
+                        <p class="label">Account Balance</p>
+                        <p class="value">$100</p>
+                    </div>
+                    <div class="row">
+                        <p class="label">Projected Growth</p>
+                        <p class="value">8%</p>
+                    </div>
+                </div>
+                <div class="chart shadow" id="myChart">Chart</div>
+            </div>
+            <div class="right">
+                <div class="card shadow" id="piechart">
+
+
+                </div>
+            </div>
+        </div>
+    </main>
+ </div>
+
+ <dialog id="alerts">
+     <button class="close-btn" onclick="closeModal()">
+         <span class="material-symbols-rounded">
+             close
+             </span>
+     </button>
+    <div id="notification">
+    <!-- Deposit Form -->
+        <form>
+            <div class="header">
+                <h2 class="heading">Fund Your Account</h2>
+                <p class="">Your funding instructions will be sent to your correspondence email. Submit this form each time you wish to make a deposit</p>
+            </div>
+            <div class="half">
+                <label for="amount">Deposit Amount <span class="currency">(USD):</span></label>
+                <input id="amount" name="amount" type="number" >
+            </div>
+            <div class="half">
+                <label for="deposit-method">Deposit Method</span></label>
+                <select id="deposit-method" name="deposit-method">
+                    <option>Select a token</option>
+                </select>
+            </div>
+
+            <button>Submit</button>
+
+            <p>Learn about our deposit and withdrawal process <a href="" class="link">here</a></p>
+        </form>
+
+        <!-- Withdrawal Form -->
+        <form>
+            <div class="header">
+                <h2 class="heading">Account Withdrawal</h2>
+                <p class="">We will confirm each withdrawal with you via email, to prevent unauthorised withdrawals</p>
+            </div>
+
+            <div class="half">
+                <label for="amount">Withdrawal Amount <span class="currency">(USD):</span></label>
+                <input id="amount" name="amount" type="number" >
+            </div> 
+
+            <div class="half">
+                <label for="withdrawal-method">Withdrawal Method</span></label>
+                <select id="withdrawal-method" name="withdrawal-method">
+                    <option>Select a token</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="withdrawal-address">Withdrawal Address</label>
+                <input id="withdrawal-address" name="withdrawal-address" type="text" >
+            </div>
+
+            <button>Submit</button>
+
+            <p>Learn about our deposit and withdrawal process <a class="link" href="#">here</a></p>
+        </form>
+
+        <!-- Statement Form -->
+        <form>
+            <div class="header">
+                <h2 class="heading">Generate Account Statement</h2>
+                <p class="">Your account statement includes all payment transactions within a given time period.</p>
+            </div>
+
+            <div class="inner-grid">
+                <div>
+                    <label for="user">Select a user <span class="red"> *(Only displayed to admins):</span></label>
+                    <select id="amount" name="amount" type="number"></select>
+                </div>
+
+                <div>
+
+                </div>
+          
+                <div>
+                    <label for="start-date">Start Date:</label>
+                    <input id="start-date" placeholder="Select start date" type="date">
+                </div>
+                <div>
+                    <label for="end-date">End Date:</label>
+                    <input id="end-date" placeholder="Select start date" type="date">
+                </div>
+            </div>
+
+            <button>Submit</button>
+        </form>
+
+    </div>
+ </dialog>
+
+ <!-- Error Modal -->
+  <dialog id="error-alert">
+    <button class="close-btn" onclick="closeModal()">
+        <span class="material-symbols-rounded">
+            close
+            </span>
+    </button>
+    <div class="error">
+        <h2>Opps</h2>
+        <p>Something went wrong. Please try again later.</p>
+    </div>
+  </dialog>
+
+ <script src="https://www.gstatic.com/charts/loader.js"></script>
+ <script>
+    google.charts.load('current',{packages:['corechart']});
+    google.charts.setOnLoadCallback(drawLineChart);
+    google.charts.setOnLoadCallback(drawPieChart)
+
+    function drawLineChart() {
+    // Load Google Charts
+    google.charts.load('current', { packages: ['corechart'] });
+    google.charts.setOnLoadCallback(() => {
+        // Set Data
+        const data = google.visualization.arrayToDataTable([
+            ['Month', 'Rate'],
+            ['January', 1], ['February', 2], ['March', 3],
+            ['April', 4], ['May', 5], ['June', 6],
+            ['July', 6], ['August', 5], ['September', 8],
+            ['October', 3], ['November', 9], ['December', null]
+        ]);
+
+        // Set Options
+        const options = {
+                    title: '2024 Performance',
+                    hAxis: { 
+                        title: 'Month',
+                        ticks: [
+                            { v: 1, f: 'January' },
+                            { v: 2, f: 'February' },
+                            { v: 3, f: 'March' },
+                            { v: 4, f: 'April' },
+                            { v: 5, f: 'May' },
+                            { v: 6, f: 'June' },
+                            { v: 7, f: 'July' },
+                            { v: 8, f: 'August' },
+                            { v: 9, f: 'September' },
+                            { v: 10, f: 'October' },
+                            { v: 11, f: 'November' },
+                            { v: 12, f: 'December' }
+                        ],
+                        slantedText: true,
+                        maxTextLines: 1,
+                    },
+                }
+
+        // Draw Chart
+        const chart = new google.visualization.LineChart(document.getElementById('myChart'));
+        chart.draw(data, options);
+    });
+}
+
+
+    function drawPieChart() {
+        // Create the data table for Anthony's pizza.
+        const data = new google.visualization.DataTable();
+        data.addColumn('string', 'Topping');
+        data.addColumn('number', 'Slices');
+        data.addRows([
+          ['Options Trading', 2],
+          ['Market Making', 8],
+        ]);
+
+        // Set options for Anthony's pie chart.
+        var options = {title:'Fund Allocation',
+        };
+
+        // Instantiate and draw the chart for Anthony's pizza.
+        const chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, options);
+    }
+    
+    const menuBtn = document.querySelector(".menu-btn")
+    const sideMenu = document.querySelector('aside')
+    const dialog = document.querySelector('#alerts')
+    const notification = document.getElementById('notification')
+    const errorAlert = document.getElementById('error-alert')
+    
+    const forms = Array.from(notification.children)
+    console.log(forms)
+
+    menuBtn.addEventListener('click', function(){
+        const icon = document.querySelector(".menu-btn span");
+        sideMenu.classList.toggle("open")
+        const isOpen = sideMenu.classList.contains("open")
+        if (isOpen) {
+            icon.textContent = "close"
+        } else {
+            icon.textContent = "menu"
+        }
+    })
+
+    function render(num) {
+        const current = forms[num]
+        forms.forEach(form=> {
+            form.classList.add("hidden")
+        })
+        current.classList.remove('hidden')
+        openModal()
+    }
+
+
+    function openModal () {
+        dialog.showModal()
+    }
+
+    function closeModal() {
+        const icon = document.querySelector(".menu-btn span");
+        sideMenu.classList.toggle("open")
+        const isOpen = sideMenu.classList.contains("open")
+        if (isOpen) {
+            icon.textContent = "close"
+        } else {
+            icon.textContent = "menu"
+        }
+        dialog.close()
+        errorAlert.close()
+    }
+
+    function openErrorModal () {
+        errorAlert.showModal()
+    }
+</script>
+</body>
+</html>

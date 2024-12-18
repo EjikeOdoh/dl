@@ -1,0 +1,379 @@
+
+:root {
+    --primary-color: #002750;
+    --secondary-color: #0066CC;
+    --accent-color: #FFA64D;
+}
+
+
+*, *::after, *::before {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+    list-style: none;
+    font-family: "Montserrat", sans-serif;
+     
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    height: min(1000px, 100svh)  ;
+    max-width: 1440px;
+    max-height: 1000px;
+    margin:auto;
+    display: grid;
+    grid-auto-rows: auto 1fr;
+    background-color: white;
+    color: #1A1A1A;
+    font-size: 14px;
+    font-weight: 500;
+
+}
+
+img, picture {
+    width: 100%;
+    object-fit: contain;
+
+}
+
+/* Styling for header */
+
+header {
+    display: flex;
+    justify-content: space-between;
+    padding:1rem
+}
+
+header .top-left, header .top-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo {
+    margin-left: 2rem;
+    width: 15rem;
+}
+
+
+.menu-btn {
+    display: none;
+}
+
+.initials {
+        width: fit-content;
+        aspect-ratio: 1;
+        display: grid;
+        place-content: center;
+        border: 1px solid black;
+        border-radius: 50%;
+        padding:10px;
+        border-color: var(--primary-color);
+        background-color: var(--primary-color);
+        color: white;
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+/* Styling for aside-section */
+
+aside {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+    position: relative;
+    padding:1rem;
+    background-color: white;
+    z-index: 10;
+}
+
+.open {
+    display: flex;
+}
+
+aside > div {
+    margin-bottom: 5rem;
+}
+
+
+.menu-item {
+    display: flex;
+    justify-items: space-evenly;
+    margin-left: 2rem;
+    gap: 1rem;
+    align-items: center;
+    position: relative;
+    height: 3.7rem;
+    transition: all 300ms ease;
+    max-width:16rem;
+    color: var(--primary-color);
+    border: none;
+    background-color: transparent;
+    width: 100%;
+}
+
+.menu-item span, .menu-item h3 {
+    font-size: 1rem;
+}
+
+.menu-item:hover {
+    margin-left: 0;
+    color: var(--secondary-color);
+}
+
+.mobile-header {
+    display: none;
+}
+
+.close-menu-btn {
+    width: min-content;
+    position: absolute;
+    right:2rem;
+}
+
+/* Styling for main section */
+
+.container {
+    display: grid;
+    grid-template-columns: 18rem 1fr;
+}
+
+main {
+    padding: 1rem;
+    display: grid;
+    gap: 1rem;
+    grid-auto-rows: auto 1fr;
+}
+
+.main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap:2rem;
+}
+
+.left {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: 2rem;
+}
+
+.right {
+    display: grid;
+}
+
+.stat {
+    padding: 1rem;
+    border: 1px solid transparent;
+    display: grid;
+    gap: 10px;
+    
+}
+
+.shadow {
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
+    border-radius: 15px;
+}
+
+/* MEDIA QUERIES */
+@media screen and (max-width: 1000px) {
+
+    .container {
+        grid-template-columns: 1fr;
+    }
+    .mobile-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+
+    .mobile-header-right {
+        display: flex;
+        align-items: center;
+        gap:1rem
+    }
+
+    .initials, .mobile-header-right .initials {
+        width: fit-content;
+        aspect-ratio: 1;
+        border: 1px solid var(--primary-color);
+        border-radius: 50%;
+        padding:0.5rem;
+        font-size: 1rem;
+        color: white;
+        background-color: var(--primary-color);
+        font-weight: bolder;
+    }
+
+    .logo {
+        width: fit-content;
+        margin:0;
+    }
+
+    .top-right, header .name {
+        display: none;
+    }
+
+  .top-right {
+        background-color: aqua;
+        display: none !important;
+    }
+
+    .menu-btn {
+        display: block;
+    }
+
+    aside {
+            position: fixed;
+            left: -100%;
+            width: 18rem;
+            height: 100% !important;
+            display: none;
+            animation: slidein 400ms ease forwards;
+        }
+
+    @keyframes slidein {
+        to {
+            left: 0;
+        }
+    }
+
+}
+
+@media screen and (max-width: 600px) {
+
+    .main {
+        grid-template-columns: 1fr;
+        gap:1rem;
+    }
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.label {
+    font-weight: 500;
+    font-size: .8rem
+}
+
+.value {
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+#clientName, .clientName {
+    font-size: 1rem;
+    font-weight: 600;
+    color:var(--primary-color);
+}
+
+.clientID {
+    font-weight: 600;
+    color: var(--primary-color);
+    text-align: right;
+}
+
+.time {
+    font-weight: 300;
+    text-align: right;
+}
+
+dialog {
+  margin: auto;
+  padding: 2rem;
+  border: none;
+  border-radius: 20px;
+  position:relative;
+}
+
+dialog .close-btn {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+}
+
+dialog #notification {
+    max-width: 40rem;
+}
+
+.hidden {
+    display: none;
+}
+
+form {
+    display: grid;
+    gap: 1rem;
+}
+
+form button {
+    width: min-content;
+    padding: 10px 1.5rem;
+    background-color: transparent;
+    border-radius: 20px;
+    border: 1px solid gainsboro;
+}
+
+label {
+    margin-bottom: 4px;
+}
+
+label, input,select {
+    display: block;
+
+}
+
+input, select {
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;
+    border: 1px solid gainsboro;
+    padding: 10px;
+}
+
+.full {
+    width: 100%;
+}
+
+.half {
+    width: 50%;
+}
+
+.header {
+    display: grid;
+    border-bottom: 0.5px solid gainsboro;
+    gap: 1rem;
+    padding:3rem 0 10px;
+}
+
+.link {
+    color:var(--secondary-color);
+}
+
+.inner-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: stretch;
+    gap: 10px;
+}
+
+.currency {
+    font-style: italic;
+}
+
+.red {
+    color: red;
+}
+
+.error h2 {
+    padding-top: 2rem;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
