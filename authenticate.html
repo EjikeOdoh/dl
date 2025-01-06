@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2FA</title>
+    <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon">
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,0,0" />
+
+    <link rel="stylesheet" href="./style.css">
+
+    <style>
+        .main {
+            display: grid;
+            place-content: center;
+            grid-template-columns: 1fr;
+        }
+
+        .card {
+            margin-inline: auto;
+            max-width: 40rem;
+            display: grid;
+            gap: 1rem;
+            padding: 2rem;
+            border: 1px solid gainsboro;
+            border-radius: 20px;
+            background-color: white;
+        }
+
+        .enable-2FA {
+            text-wrap: nowrap;
+        }
+
+        @media screen and (max-width: 600px) {
+            .half {
+                width: 100%;
+            }
+
+            .card {
+                padding: 1rem;
+            }
+        }
+
+        .modal-container {
+            display: flex;
+            /* background: rgba(0, 0, 0, .3); */
+        }
+
+        #qr-img {
+            width: 195px;
+            height: 195px;
+        }
+
+        .modal-wrapper {
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 1px 1px 5px #eee;
+            margin: 2rem auto;
+
+            max-height: calc(100vh - 4rem);
+            /* overflow-y: auto; */
+        }
+
+        .txt-underline {
+            border-bottom: 1px solid #f2f2f2;
+            margin-bottom: .7rem;
+        }
+
+        .txt-underline h4 {
+            color: #5652a2;
+            font-size: 14px;
+            font-weight: 500;
+            padding: .9rem 0 0.1rem;
+        }
+
+        .modal .modal-wrapper ul,
+        .modal .modal-wrapper ol {
+            padding: 0;
+            margin: auto 15px;
+            color: #595555;
+            font-family: "Roboto", sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .qrcode-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .secret_key {
+            letter-spacing: .05px;
+        }
+
+        .modal input.form-control {
+            width: 60%;
+            font-size: large;
+            margin-top: 5px;
+        }
+
+        .modal .form-control::placeholder {
+            color: #999;
+            opacity: 1;
+            font-size: 17px;
+            font-weight: 500;
+        }
+
+        .modal p {
+            font-family: "Roboto", sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+            color: #595555;
+        }
+
+        .bx-1 {
+            border-bottom: 1px solid #f2f2f2;
+            margin: 0 -15px;
+            padding-left: 15px;
+        }
+
+        .bx-1 h3 {
+            font-weight: 500;
+            font-size: 16px;
+            padding: .7rem 0 .5rem;
+        }
+
+        .modal .btn-container {
+            padding: 0;
+            padding-bottom: 2rem;
+        }
+
+        .modal button.modal-close {
+            border: 1px solid #eee;
+            background: #fff;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #8c8f8d;
+            margin-right: 5px;
+        }
+
+        .modal button.modal-verify,
+        .modal button.modal-activated {
+            border: 1px solid #4139d2;
+            background: #4139d2;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .modal .modal-msg {
+            font-size: 11px;
+            margin-top: 2px;
+            letter-spacing: .2px;
+            display: flex !important;
+            align-items: center;
+            gap: 3px;
+            display: none;
+            padding: 1.5px 5px 2px;
+            line-height: 1;
+        }
+
+        .modal .modal-msg svg {
+            display: none;
+        }
+
+        .modal .modal-msg.alert-danger svg.error,
+        .modal .modal-msg.alert-success svg.success,
+        .modal .modal-msg.error,
+        .modal .modal-msg.alert-danger,
+        .modal .modal-msg.success,
+        .modal .modal-msg.alert-success {
+            display: block;
+        }
+
+        .modal .modal-msg.error {
+            color: #a94442;
+        }
+
+        .modal .modal-msg.success {
+            color: #3c763d;
+        }
+
+        svg.err-svg {
+            display: none;
+        }
+
+        .modal button.modal-verify,
+        .modal button.modal-activated {
+            border: 1px solid #1c355e;
+            background: #1c355e;
+        }
+
+        .btn {
+            padding: 5px 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="top-left">
+            <a href="./index.html" class="logo">
+                <img src="./assets/logo.png">
+            </a>
+
+            <div class="name">
+                <p>Hello</p>
+                <p id="clientName">Dabelulu</p>
+            </div>
+        </div>
+        <div class="top-right">
+            <div class="partner">
+                <p id="clientID" class="clientID" title="Client ID">
+                    ID-Billions
+                </p>
+                <p id="time" class="time" title="Last Logged in">
+                    ID-Billions
+                </p>
+
+            </div>
+            <div class="initials">
+                E.J
+            </div>
+        </div>
+        <button class="menu-btn">
+            <span class="material-symbols-rounded">
+                menu
+            </span>
+        </button>
+    </header>
+
+    <div class="container">
+        <aside>
+            <nav>
+                <ul>
+                    <li>
+                        <a class="menu-item" href="./index.html">
+                            <span class="material-symbols-rounded">dashboard</span>
+                            <h3>Dashboard</h3>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="menu-item" href="./deposit.html">
+                            <span class="material-symbols-rounded">payments</span>
+                            <h3>Deposit</h3>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="menu-item" href="./withdrawal.html">
+                            <span class="material-symbols-rounded">credit_card</span>
+                            <h3>Withdraw</h3>
+                        </a>
+
+                    </li>
+                    <li>
+                        <a class="menu-item" href="./statement.html">
+                            <span class="material-symbols-rounded">account_balance</span>
+                            <h3> Account Statement</h3>
+                        </a>
+
+                    </li>
+                    <li>
+                        <a class="menu-item" href="">
+                            <span class="material-symbols-rounded">
+                                tour
+                            </span>
+                            <h3> Visitation</h3>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="menu-item" href="./authenticate.html">
+                            <span class="material-symbols-rounded"> key</span>
+                            <h3> Enable 2FA</h3>
+                        </a>
+                    </li>
+                </ul>
+
+
+            </nav>
+
+            <div>
+                <a class="menu-item" href="">
+                    <span class="material-symbols-rounded">logout</span>
+                    <h3> Logout</h3>
+                </a>
+            </div>
+
+        </aside>
+        <main>
+
+            <div>
+                <div class="mobile-header">
+                    <div class="mobile-header-left">
+
+                        <p>Hello</p>
+                        <p class="clientName">Dabelulu</p>
+
+                    </div>
+                    <div class="mobile-header-right">
+                        <div class="partner">
+                            <p class="clientID">
+                                ID-Billions
+                            </p>
+                            <p class="time">
+                                ID-Billions
+                            </p>
+
+                        </div>
+                        <div class="initials">
+                            E.J
+                        </div>
+                    </div>
+                </div>
+                <marquee>
+                    Hello world
+                </marquee>
+            </div>
+            <div class="main">
+                <div class="card">
+                    <div class="header">
+                        <h2 class="heading">Mobile App Authentication (2FA)</h2>
+                        <p class="">Secure your account with TOTP two-factor authentication</p>
+                    </div>
+                    <div>
+                        <div id="status">
+                        </div>
+                        <div class="icon-2FA">
+                            <img src="./assets/two-factor-authentication.png" alt="">
+                        </div>
+
+                    </div>
+                    <button onclick="openModal()" class="enable-2FA">Enable 2FA</button>
+
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <dialog id="alert">
+        <button class="close-btn" onclick="closeModal()">
+            <span class="material-symbols-rounded">
+                close
+            </span>
+        </button>
+        <div class="modal-container row">
+            <div class="modal-wrapper col-12 col-m-12 col-sm-12">
+                <div class="bx-1">
+                    <h3>Two-Factor Authentication (2FA)</h3>
+                </div>
+                <div class="bx-2">
+                    <div class="txt-underline">
+                        <h4>Configuring Google Authenticator or Authy</h4>
+                    </div>
+                    <div>
+                        <ol>
+                            <li>Install Google authenticator (IOS - Andriod) or Authy (IOS - Android).</li>
+                            <li>In the authenticator app, select "+" icon.</li>
+                            <li>Select "Scan a barcode (or QR code)" and use the phone's camera to scan this barcode.
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="bx-3">
+                    <div class="txt-underline">
+                        <h4>Scan QR Code</h4>
+                    </div>
+                    <div>
+                        <div class="qrcode-container">
+                            <img src="./assets/two-factor-authentication.png" alt="" id="qr-img">
+                        </div>
+                    </div>
+                </div>
+                <div class="bx-4">
+                    <div class="txt-underline">
+                        <h4>Or Enter Code Into Your App</h4>
+                    </div>
+                    <div>
+                        <p><span>SecretKey:</span> <span class="secret_key"></span> <span>(Base32 encoded)</span></p>
+                    </div>
+                </div>
+                <div>
+                    <div class="txt-underline">
+                        <h4>Verify Code</h4>
+                    </div>
+                    <div>
+                        <p>For changing the setting, please verify the authentication code:</p>
+
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="token" id="token" title="Authentication Code"
+                                placeholder="Authentication Code" required="">
+
+                            <div class="modal-msg">
+                                <svg class="bi flex-shrink-0 me-2 error" width="11" height="11" role="img"
+                                    aria-label="Danger:">
+                                    <use xlink:href="#exclamation-triangle-fill" />
+                                </svg>
+                                <svg class="bi flex-shrink-0 me-2 success" width="11" height="11" role="img"
+                                    aria-label="Success:">
+                                    <use xlink:href="#check-circle-fill" />
+                                </svg>
+                                <span class="res_msg"></span>
+                            </div>
+                        </div>
+
+                        <div class="btn-container">
+                            <button class="btn modal-close">
+                                Close
+                            </button>
+                            <button class="btn modal-verify">
+                                Verify & Activate
+                            </button>
+                            <button class="btn modal-activated hide">
+                                Activated!
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- Error Modal -->
+    <dialog id="error-alert">
+        <button class="close-btn" onclick="closeModal()">
+            <span class="material-symbols-rounded">
+                close
+            </span>
+        </button>
+        <div class="error">
+            <h2>Opps</h2>
+            <p>Something went wrong. Please try again later.</p>
+        </div>
+    </dialog>
+
+    <script>
+
+        const menuBtn = document.querySelector(".menu-btn")
+        const sideMenu = document.querySelector('aside')
+        const dialog = document.querySelector('#alert')
+        const errorAlert = document.getElementById('error-alert')
+        const status = document.getElementById('status')
+
+
+
+        function checkStatus(bool) {
+            if (bool) {
+                status.innerHTML = `<span class="material-symbols-rounded">
+                       encrypted
+                       </span><span>ACTIVATED</span>`
+            } else {
+                status.innerHTML = ` <span class="material-symbols-rounded">
+                           warning
+                           </span><span>DEACTIVATED</span>`
+            }
+        }
+
+        checkStatus(false)
+
+        menuBtn.addEventListener('click', function () {
+            const icon = document.querySelector(".menu-btn span");
+            sideMenu.classList.toggle("open")
+            const isOpen = sideMenu.classList.contains("open")
+            if (isOpen) {
+                icon.textContent = "close"
+            } else {
+                icon.textContent = "menu"
+            }
+        })
+
+
+        function openModal() {
+            console.log("clicked")
+            dialog.showModal()
+            document.body.style.setProperty('overflow', "hidden")
+        }
+
+        function closeModal() {
+            const icon = document.querySelector(".menu-btn span");
+            sideMenu.classList.remove("open")
+            const isOpen = sideMenu.classList.contains("open")
+            if (isOpen) {
+                icon.textContent = "close"
+            } else {
+                icon.textContent = "menu"
+            }
+            dialog.close()
+            errorAlert.close()
+            document.body.style.setProperty("overflow", "scroll")
+        }
+
+        function openErrorModal() {
+            errorAlert.showModal()
+        }
+    </script>
+</body>
+
+</html>

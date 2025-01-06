@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Withdrawal</title>
+    <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon">
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,0,0" />
+
+    <link rel="stylesheet" href="./style.css">
+
+    <style>
+
+        .main {
+            display: grid;
+            place-content: center;
+            grid-template-columns: 1fr;
+        }
+
+        form {
+            margin-inline: auto;
+            max-width: 40rem;
+        }
+
+        @media screen and (max-width: 600px) {
+            .half {
+                width: 100%;
+            }
+
+            form {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="top-left">
+            <a href="./index.html" class="logo">
+                <img src="./assets/logo.png">
+            </a>
+    
+            <div class="name">
+                <p>Hello</p>
+                <p id="clientName">Dabelulu</p>
+            </div>
+        </div>
+        <div class="top-right">
+            <div class="partner">
+                <p id="clientID" class="clientID" title="Client ID">
+                    ID-Billions
+                </p>
+                <p id="time" class="time" title="Last Logged in">
+                    ID-Billions
+                </p>
+                
+            </div>
+            <div class="initials">
+                E.J
+            </div>
+        </div>
+        <button class="menu-btn">
+            <span class="material-symbols-rounded">
+                menu
+                </span>
+        </button>
+    </header>
+
+ <div class="container">
+    <aside>
+        <nav>
+           <ul>
+            <li>
+                <a class="menu-item" href="./index.html">
+                    <span class="material-symbols-rounded">dashboard</span>
+                    <h3>Dashboard</h3>
+                </a>
+            </li>
+            <li>
+                <a class="menu-item"  href="./deposit.html">
+                    <span class="material-symbols-rounded">payments</span>
+                    <h3>Deposit</h3>
+                </a>
+            </li>
+        
+            <li>
+                <a class="menu-item" href="./withdrawal.html" >
+                    <span class="material-symbols-rounded">credit_card</span>
+                    <h3>Withdraw</h3>
+                </a>
+                
+            </li>
+            <li>
+                <a class="menu-item" href="./statement.html" >
+                    <span class="material-symbols-rounded">account_balance</span>
+                    <h3> Account Statement</h3>
+                </a>
+               
+            </li>
+            <li>
+                <a class="menu-item" href="">
+                    <span class="material-symbols-rounded">
+                        tour
+                        </span>
+                    <h3> Visitation</h3>
+                </a>
+            </li>
+            <li>
+                <a class="menu-item" href="./authenticate.html">
+                    <span class="material-symbols-rounded"> key</span>
+                    <h3> Enable 2FA</h3>
+                </a>
+            </li>
+           </ul>
+
+        
+        </nav>
+
+        <div>
+            <a class="menu-item" href="">
+                <span class="material-symbols-rounded">logout</span>
+                <h3> Logout</h3>
+            </a>
+        </div>
+
+    </aside>
+    <main>
+
+        <div>
+            <div class="mobile-header">
+                <div class="mobile-header-left">
+
+                        <p>Hello</p>
+                        <p class="clientName">Dabelulu</p>
+
+                </div>
+                <div class="mobile-header-right">
+                    <div class="partner">
+                        <p class="clientID">
+                            ID-Billions
+                        </p>
+                        <p class="time">
+                            ID-Billions
+                        </p>
+                        
+                    </div>
+                    <div class="initials">
+                        E.J
+                    </div>
+                </div>
+            </div>
+            <marquee>
+                Hello world
+            </marquee>
+        </div>
+        <div class="main">
+            <form>
+                <div class="header">
+                    <h2 class="heading">Account Withdrawal</h2>
+                    <p class="">We will confirm each withdrawal with you via email, to prevent unauthorised withdrawals</p>
+                </div>
+    
+                <div class="half">
+                    <label for="amount">Withdrawal Amount <span class="currency">(USD):</span></label>
+                    <input id="amount" name="amount" type="number" >
+                </div> 
+    
+                <div class="half">
+                    <label for="withdrawal-method">Withdrawal Method</span></label>
+                    <select id="withdrawal-method" name="withdrawal-method">
+                        <option>Select a token</option>
+                    </select>
+                </div>
+    
+                <div>
+                    <label for="withdrawal-address">Withdrawal Address</label>
+                    <input id="withdrawal-address" name="withdrawal-address" type="text" >
+                </div>
+    
+                <button>Submit</button>
+    
+                <p>Learn about our deposit and withdrawal process <a class="link" href="#">here</a></p>
+            </form>
+        </div>
+
+    </main>
+ </div>
+
+<!-- Error Modal -->
+ <dialog id="error-alert">
+   <button class="close-btn" onclick="closeModal()">
+       <span class="material-symbols-rounded">
+           close
+           </span>
+   </button>
+   <div class="error">
+       <h2>Opps</h2>
+       <p>Something went wrong. Please try again later.</p>
+   </div>
+ </dialog>
+
+<script>
+
+   const menuBtn = document.querySelector(".menu-btn")
+   const sideMenu = document.querySelector('aside')
+   const errorAlert = document.getElementById('error-alert')
+
+   menuBtn.addEventListener('click', function(){
+       const icon = document.querySelector(".menu-btn span");
+       sideMenu.classList.toggle("open")
+       const isOpen = sideMenu.classList.contains("open")
+       if (isOpen) {
+           icon.textContent = "close"
+       } else {
+           icon.textContent = "menu"
+       }
+   })
+
+   function closeModal() {
+       const icon = document.querySelector(".menu-btn span");
+       sideMenu.classList.toggle("open")
+       const isOpen = sideMenu.classList.remove("open")
+       if (isOpen) {
+           icon.textContent = "close"
+       } else {
+           icon.textContent = "menu"
+       }
+       errorAlert.close()
+       document.body.style.setProperty("overflow", "scroll")
+   }
+
+   function openErrorModal () {
+       errorAlert.showModal()
+   }
+</script>
+</body>
+</html>
