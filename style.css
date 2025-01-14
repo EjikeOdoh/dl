@@ -72,6 +72,10 @@ header .top-right {
     width: 15rem;
 }
 
+.logo img {
+    height: 3rem;
+}
+
 
 .menu-btn {
     display: none;
